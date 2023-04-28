@@ -13,10 +13,35 @@ h2 {
   color: coral;
 }
 
-.curso {
-  padding: 5px 10px 0 5px;
-  border-bottom: 1px dashed #eee;
+.button{
+  width: 7vh;
+  height: 7vh;
 }
+
+.buttons{
+  width: 18vh;
+  height: 8vh;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  justify-content: space-around;
+}
+
+.box{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  padding: 5px 10px 0 5px;
+  border-bottom: 2px dashed #272525;
+  margin-bottom: 10px;
+}
+
+.curso {
+  display: flex;
+  flex-direction: column;
+}
+
 
 .btn-add {
   position: fixed;

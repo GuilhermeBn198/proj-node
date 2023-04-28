@@ -16,9 +16,29 @@ export class CursoController {
             console.log(error);
         }
     }
-    async update(cursoDTO) {
+
+    async update(id, nome, ch) {
         try {
-            await this.curso.update(cursoDTO);
+            await this.curso.update(
+                { id, nome, ch },
+                {
+                    where: {
+                        id: id,
+                    },
+                }
+            );
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+    async delete(id) {
+        try {
+            await this.curso.destroy({
+                where: {
+                    id,
+                },
+            });
         } catch (error) {
             console.log(error);
         }
