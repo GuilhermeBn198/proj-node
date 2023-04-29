@@ -4,8 +4,21 @@ export class CursoController {
     }
 
     async getAll() {
-        const cursos = await this.curso.findAll();
-        return cursos;
+        try {
+            const cursos = await this.curso.findAll();
+            return cursos;
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+    async getById(id) {
+        try {
+            const curso = await this.curso.findByPk(id);
+            return curso;
+        } catch (error) {
+            console.log(error);
+        }
     }
 
     async adicionar(cursoDTO) {

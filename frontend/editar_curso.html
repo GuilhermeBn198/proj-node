@@ -1,93 +1,97 @@
 <!DOCTYPE html>
 <html lang="pt-br">
-    <html>
-        <head>
-            <meta charset="UTF-8" />
-            <meta
-                http-equiv="X-UA-Compatible"
-                content="IE=edge" />
-            <meta
-                name="viewport"
-                content="width=device-width, initial-scale=1.0" />
-            <title>Editar Curso</title>
-        </head>
-        <body>
-            <h1>Editar Curso</h1>
-            <form id="form-editar">
-                <label for="nome">Nome:</label>
-                <input
-                    type="text"
-                    id="nome"
-                    name="nome" /><br /><br />
-                <label for="ch">Carga Horária:</label>
-                <input
-                    type="text"
-                    id="ch"
-                    name="ch" /><br /><br />
-                <input
-                    type="submit"
-                    value="Salvar" />
-                <input
-                    type="button"
-                    value="Cancelar"
-                    onclick="window.location.href='./index.html'" />
-            </form>
+    <head>
+        <meta charset="UTF-8" />
+        <meta
+            http-equiv="X-UA-Compatible"
+            content="IE=edge" />
+        <meta
+            name="viewport"
+            content="width=device-width, initial-scale=1.0" />
+        <title>Editar Curso</title>
+    </head>
+    <body>
+        <h1>Editar Curso</h1>
+        <form id="form-editar">
+            <label for="nome">Nome:</label>
+            <input
+                type="text"
+                id="nome"
+                name="nome" /><br /><br />
+            <label for="ch">Carga Horária:</label>
+            <input
+                type="number"
+                id="ch"
+                name="cargaHoraria" /><br /><br />
+            <input
+                type="submit"
+                value="Salvar" />
+            <input
+                type="button"
+                value="Cancelar"
+                onclick="window.location.href='./index.html'" />
+        </form>
+        <script>
+            // função que é executada quando a página é carregada
+            window.onload = async function () {
+                // recupera o id do curso que será editado da URL
+                const urlParams = new URLSearchParams(window.location.search);
+                const cursoId = urlParams.get("id");
 
-            <script>
-                // função que é executada quando a página é carregada
-                window.onload = async function () {
-                    // recupera o id do curso que será editado da URL
-                    const urlParams = new URLSearchParams(
-                        window.location.search
-                    );
-                    const cursoId = urlParams.get("id");
+                // faz uma requisição ao backend para buscar o curso pelo id
+                const response = await fetch(
+                    `http://localhost:3000/cursos/${cursoId}`
+                );
+                const curso = await response.json();
 
-                    // faz uma requisição ao backend para buscar o curso pelo id
-                    const response = await fetch(`/cursos/${cursoId}`);
-                    const curso = await response.json();
+                // preenche os campos do formulário com as informações do curso
+                document.getElementById("nome").value = curso.nome;
+                document.getElementById("ch").value = curso.ch;
 
-                    // preenche os campos do formulário com as informações do curso
-                    document.getElementById("nome").value = curso.nome;
-                    document.getElementById("ch").value = curso.cargaHoraria;
-                };
+                // adiciona o evento de submissão do formulário
+                document
+                    .getElementById("form-editar")
+                    .addEventListener("submit", handleSubmit);
+            };
 
-                // função que é executada quando o formulário é enviado
-                async function handleSubmit(event) {
-                    event.preventDefault(); // previne o comportamento padrão de submissão do formulário
+            async function handleSubmit(event) {
+                event.preventDefault(); // previne o comportamento padrão de submissão do formulário
 
-                    const urlParams = new URLSearchParams(
-                        window.location.search
-                    );
-                    const cursoId = urlParams.get("id");
+                const urlParams = new URLSearchParams(window.location.search);
+                const cursoId = urlParams.get("id");
 
-                    // obtém os valores dos campos do formulário
-                    const nome = document.getElementById("nome").value;
-                    const cargaHoraria = document.getElementById("ch").value;
+                // obtém os valores dos campos do formulário
+                const nome = document.getElementById("nome").value.toString();
+                const ch = document.getElementById("ch").value.toString(); // alteração aqui
 
-                    // faz uma requisição ao backend para atualizar o curso
+                // faz uma requisição ao backend para atualizar o curso
+                try {
                     const response = await fetch(
-                        `/api/cursos/update/${cursoId}`,
+                        `http://localhost:3000/cursos/update/${cursoId}`,
                         {
-                            method: "POST",
+                            method: "PUT",
                             headers: {
                                 "Content-Type": "application/json",
                             },
-                            body: JSON.stringify({ nome, cargaHoraria }),
+                            body: JSON.stringify({ nome, ch }), // alteração aqui
                         }
                     );
 
-                    // exibe uma mensagem de sucesso
-                    alert("Curso atualizado com sucesso");
+                    if (response.ok) {
+                        // verifica se a resposta foi bem-sucedida
+                        // exibe uma mensagem de sucesso
+                        alert("Curso atualizado com sucesso");
 
-                    // redireciona para a página inicial
-                    window.location.href = "./index.html";
+                        // redireciona para a página inicial
+                        window.location.href = "./index.html";
+                    }
+                } catch (error) {
+                    console.log(error);
+                    alert(
+                        "Erro ao atualizar o curso. Tente novamente mais tarde."
+                    );
                 }
-
-                // adiciona o listener de evento para o formulário
-                document
-                    .getElementById("curso-form")
-                    .addEventListener("submit", handleSubmit);
-            </script>
-        </body>
-    </html>
+            }
+        </script>
+    </body>
 </html>
