@@ -26,7 +26,7 @@ router.post(
         //se os dados forem válidos, o sistema executará aqui
         const { nome, ch } = req.body;
         await cursoController.adicionar({ nome, ch });
-        res.status(201).send("Curso criado com sucesso!");
+        res.status(201).json({ message: "Curso criado com sucesso!" });
     }
 );
 
@@ -45,11 +45,14 @@ router.delete(
         if (!erros.isEmpty()) {
             return res.status(400).json({ erros: erros.array });
         }
+
+        //se os dados forem válidos, o sistema executará aqui
         const { id } = req.body;
         await cursoController.delete(id);
-        res.status(200).send("Curso deletado com sucesso");
+        res.status(200).json({ message: "Curso criado com sucesso!" });
     }
 );
+
 router.post(
     "/update/:id",
     [
@@ -73,9 +76,11 @@ router.post(
         if (!erros.isEmpty()) {
             return res.status(400).json({ erros: erros.array });
         }
+
+        //se os dados forem válidos, o sistema executará aqui
         const { id, nome, ch } = req.body;
         await cursoController.update(id, nome, ch);
-        res.status(200).send("Curso atualizado com sucesso");
+        res.status(200).json({ message: "Curso criado com sucesso!" });
     }
 );
 export default router;
