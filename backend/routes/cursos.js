@@ -56,11 +56,11 @@ router.delete(
     "/delete/:id",
     [
         //validação dos dados
-        body("id")
-            .isNumeric()
-            .withMessage("o campo id tem que ser numérico")
-            .notEmpty()
-            .withMessage("O campo id é obrigatório"),
+        body("id"),
+        // .isNumeric()
+        // .withMessage("o campo id tem que ser numérico")
+        // .notEmpty()
+        // .withMessage("O campo id é obrigatório"),
     ],
     async (req, res) => {
         const erros = validationResult(req);
